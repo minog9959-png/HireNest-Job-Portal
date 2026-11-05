@@ -61,6 +61,9 @@ npm run dev
 ```
 Frontend: http://localhost:5173
 
+## CV upload (Cloudinary)
+Seeker Apply form me computer se PDF select karta hai. Frontend file ko FormData me bhejta hai, backend `multer` se file memory me leta hai (sirf PDF, max 5MB), phir Cloudinary par upload karta hai (`hirenest-cvs` folder) aur us ka link `resumeLink` me save karta hai. Employer Applicants page par `Download CV` se wahi PDF kholta hai. Cloudinary ki 3 values zaroori hain: `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` — sirf `.env` / Vercel Environment Variables me, kabhi code ya GitHub me nahi.
+
 ## Live deployment (Vercel + GitHub)
 Do alag Vercel projects hain:
 - **Frontend:** Vercel project ki root `frontend/` hai (Vite). Is me env var `VITE_API_URL` set karein, live backend ki taraf, jaise `https://<backend-project>.vercel.app/api`.

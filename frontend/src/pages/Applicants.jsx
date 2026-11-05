@@ -27,7 +27,7 @@ export default function Applicants() {
           <p>Experience: {a.experience || '-'}</p>
           <p>Skills: {a.applicant?.skills || '-'}</p>
           {a.coverLetter && <p><b>Cover letter:</b> {a.coverLetter}</p>}
-          {a.resumeLink && <p><a href={a.resumeLink} target="_blank" rel="noreferrer">Open CV</a></p>}
+          {a.resumeLink && <p><a href={a.resumeLink} target="_blank" rel="noreferrer">Download CV</a></p>}
           <p>Status: <b>{a.status}</b></p>
           <button onClick={() => setStatus(a._id, 'shortlisted')}>Shortlist</button>{' '}
           <button onClick={() => setStatus(a._id, 'rejected')}>Reject</button>{' '}

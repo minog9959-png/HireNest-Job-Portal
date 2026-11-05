@@ -16,3 +16,19 @@ export async function api(path, method = 'GET', body) {
   if (!res.ok) throw new Error(data.message || 'Something went wrong');
   return data;
 }
+
+// File upload (FormData) ke liye alag helper: Content-Type header nahi lagate,
+// browser khud multipart boundary lagata hai.
+export async function apiUpload(path, formData) {
+  const token = localStorage.getItem('token');
+  const res = await fetch(`${API}${path}`, {
+    method: 'POST',
+    headers: {
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: formData,
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.message || 'Something went wrong');
+  return data;
+}

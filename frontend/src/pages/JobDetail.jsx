@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { api } from '../services/api';
+import { api, apiUpload } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import Alert from '../components/Alert';
 
@@ -15,7 +15,7 @@ export default function JobDetail() {
   const [experience, setExperience] = useState('');
   const [phone, setPhone] = useState('');
   const [coverLetter, setCoverLetter] = useState('');
-  const [resumeLink, setResumeLink] = useState('');
+  const [resumeFile, setResumeFile] = useState(null);
   const [alert, setAlert] = useState(null);
 
   useEffect(() => {
@@ -33,15 +33,16 @@ export default function JobDetail() {
     e.preventDefault();
     setAlert(null);
     try {
-      await api('/applications', 'POST', {
-        jobId: id,
-        applicantName,
-        applicantEmail,
-        experience,
-        phone,
-        coverLetter,
-        resumeLink,
-      });
+      // File ke sath FormData bhejte hain, JSON nahi.
+      const formData = new FormData();
+      formData.append('jobId', id);
+      formData.append('applicantName', applicantName);
+      formData.append('applicantEmail', applicantEmail);
+      formData.append('experience', experience);
+      formData.append('phone', phone);
+      formData.append('coverLetter', coverLetter);
+      if (resumeFile) formData.append('resume', resumeFile);
+      await apiUpload('/applications', formData);
       setAlert({ type: 'success', text: 'Application submitted successfully! You can check your status in My Applications.' });
     } catch (err) {
       setAlert({ type: 'error', text: err.message });
@@ -66,8 +67,9 @@ export default function JobDetail() {
           <input required placeholder="Experience (e.g. 2 years, Fresher)" value={experience} onChange={(e) => setExperience(e.target.value)} />
           <input required type="tel" placeholder="Phone number" value={phone} onChange={(e) => setPhone(e.target.value)} />
           <textarea placeholder="Cover letter (optional)" value={coverLetter} onChange={(e) => setCoverLetter(e.target.value)} />
-          <input placeholder="CV link (Google Drive link, optional)" value={resumeLink} onChange={(e) => setResumeLink(e.target.value)} />
-          <p className="hint">No CV file upload here. Upload your CV to Google Drive, set Share to Anyone with the link, and paste that link here. The employer will open the same link to view your CV.</p>
+          <label>Upload your CV (PDF only, max 5MB)</label>
+          <input type="file" accept=".pdf,application/pdf" onChange={(e) => setResumeFile(e.target.files[0] || null)} />
+          {resumeFile && <p className="hint">Selected: {resumeFile.name}</p>}
           <button>Apply</button>
           {alert && <Alert type={alert.type}>{alert.text}</Alert>}
         </form>

@@ -28,7 +28,7 @@ export default function MyApplications() {
           <p>Phone: {a.phone || '-'}</p>
           <p>Experience: {a.experience || '-'}</p>
           {a.coverLetter && <p><b>Cover letter:</b> {a.coverLetter}</p>}
-          {a.resumeLink && <p><a href={a.resumeLink} target="_blank" rel="noreferrer">Open CV</a></p>}
+          {a.resumeLink && <p><a href={a.resumeLink} target="_blank" rel="noreferrer">Download CV</a></p>}
           <p>Status: <b>{a.status}</b></p>
         </div>
       ))}
