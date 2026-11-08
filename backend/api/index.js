@@ -8,12 +8,18 @@ const app = require('../server');
 let dbPromise = null;
 
 module.exports = async (req, res) => {
-  if (!dbPromise) {
-    dbPromise = connectDB().catch((e) => {
-      dbPromise = null;
-      throw e;
-    });
+  try {
+    if (!dbPromise) {
+      dbPromise = connectDB().catch((e) => {
+        dbPromise = null;
+        throw e;
+      });
+    }
+    await dbPromise;
+  } catch (e) {
+    // Database connect na ho to connection toro mat (warna browser ko
+    // "Failed to fetch" milta hai) — saaf 503 jawab do, dobara try ho sake
+    return res.status(503).json({ message: 'Database is waking up, please try again' });
   }
-  await dbPromise;
   return app(req, res);
 };
