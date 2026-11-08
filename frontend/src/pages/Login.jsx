@@ -27,7 +27,6 @@ export default function Login() {
       <input type="password" required placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
       <button>Login</button>
       {error && <Alert type="error">{error}</Alert>}
-      <p className="hint">Demo: seeker@demo.local / 123456 or employer@demo.local / 123456 (after seeding)</p>
     </form>
   );
 }
