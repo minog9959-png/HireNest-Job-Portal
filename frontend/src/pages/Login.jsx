@@ -21,6 +21,7 @@ export default function Login() {
   }
 
   return (
+    <div className="auth-page">
     <form onSubmit={submit}>
       <h1>Login</h1>
       <input type="email" required placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -28,5 +29,6 @@ export default function Login() {
       <button>Login</button>
       {error && <Alert type="error">{error}</Alert>}
     </form>
+    </div>
   );
 }

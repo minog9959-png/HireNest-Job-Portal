@@ -21,6 +21,7 @@ export default function Register() {
   }
 
   return (
+    <div className="auth-page">
     <form onSubmit={submit}>
       <h1>Register</h1>
       <input required placeholder="Name" value={form.name} onChange={set('name')} />
@@ -37,5 +38,6 @@ export default function Register() {
       <button>Register</button>
       {error && <Alert type="error">{error}</Alert>}
     </form>
+    </div>
   );
 }

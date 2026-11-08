@@ -6,7 +6,10 @@ body {
   background: #eef2f7;
   color: #1f2937;
   line-height: 1.5;
+  overflow-x: hidden;
 }
+
+img { max-width: 100%; }
 
 a { color: #2563eb; text-decoration: none; }
 a:hover { text-decoration: underline; }
@@ -71,6 +74,7 @@ p { color: #4b5563; }
 form {
   display: grid;
   gap: 12px;
+  width: 100%;
   max-width: 520px;
   background: #fff;
   padding: 28px;
@@ -78,6 +82,10 @@ form {
   border: 1px solid #e5e7eb;
   box-shadow: 0 8px 24px rgba(15, 36, 64, 0.08);
 }
+
+/* Login / Register page: form screen ke center me */
+.auth-page { display: flex; justify-content: center; padding-top: 8px; }
+.auth-page form { margin: 0; }
 form h1, form h3 { margin-top: 0; }
 input, select, textarea {
   width: 100%;
@@ -126,10 +134,47 @@ button:hover { background: #1d4ed8; }
 h1 + div { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
 h1 + div input, h1 + div select { width: auto; flex: 1 1 180px; }
 
+/* Responsive: tablet aur mobile */
+@media (max-width: 768px) {
+  .container { padding: 16px 14px 36px; }
+  .navbar { padding: 12px 14px; gap: 10px; margin-bottom: 20px; }
+  .brand { font-size: 19px; }
+  .nav-logo-icon { height: 38px; width: 38px; }
+  .nav-links { gap: 12px; }
+  h1 { font-size: 28px; }
+  .hero { padding: 32px 24px; }
+  .hero h1 { font-size: 32px; }
+  .hero .hero-brand h1 { font-size: 36px; }
+  .hero-logo-icon { height: 64px; width: 64px; }
+}
+
 @media (max-width: 640px) {
   .hero { padding: 28px 22px; }
   .hero h1 { font-size: 30px; }
   form { padding: 20px; }
+}
+
+@media (max-width: 480px) {
+  .container { padding: 12px 10px 32px; }
+  .navbar { flex-direction: column; align-items: flex-start; padding: 12px; border-radius: 12px; }
+  .brand { font-size: 18px; }
+  .nav-links { gap: 10px; font-size: 14px; }
+  .nav-links button { padding: 10px 14px; }
+  .user-chip { max-width: 100%; overflow-wrap: anywhere; }
+  h1 { font-size: 26px; }
+  .hero { padding: 24px 18px; border-radius: 14px; }
+  .hero h1 { font-size: 26px; }
+  .hero p { font-size: 16px; }
+  .hero-brand { gap: 10px; flex-wrap: wrap; }
+  .hero .hero-brand h1 { font-size: 30px; }
+  .hero .hero-tagline { font-size: 16px; }
+  .hero-logo-icon { height: 56px; width: 56px; }
+  .auth-page { padding-top: 0; }
+  form { padding: 18px 16px; border-radius: 12px; }
+  /* Mobile par input ka font 16px, warna phone par tap karte hi page zoom ho jata hai */
+  input, select, textarea, button { font-size: 16px; }
+  .card { padding: 16px; }
+  h1 + div input, h1 + div select { flex: 1 1 100%; }
 }
 
 /* Beautiful alerts: success / error / info */
