@@ -85,7 +85,7 @@ form {
 
 /* Login / Register page: form screen ke center me, thora bara */
 .auth-page { display: flex; justify-content: center; align-items: center; min-height: 65vh; padding-top: 8px; }
-.auth-page form { margin: 0; max-width: 600px; padding: 40px 40px 48px; gap: 16px; }
+.auth-page form { margin: 0; max-width: 600px; padding: 40px 24px 48px; gap: 16px; }
 .auth-page form h1 { font-size: 36px; margin-bottom: 8px; }
 .auth-page form input, .auth-page form select { padding: 14px 16px; font-size: 16px; }
 .auth-page form button { padding: 14px 18px; font-size: 16px; }
