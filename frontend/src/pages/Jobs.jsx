@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../services/api';
+import { useAuth } from '../context/AuthContext';
 
 // Search + filter: teeno inputs sirf URL query banate hain, backend filter karta hai
 export default function Jobs() {
   const [jobs, setJobs] = useState([]);
+  const [appliedIds, setAppliedIds] = useState(new Set());
+  const { user } = useAuth();
   const [search, setSearch] = useState('');
   const [location, setLocation] = useState('');
   const [type, setType] = useState('');
@@ -19,6 +22,14 @@ export default function Jobs() {
 
   useEffect(() => {
     load();
+    // Seeker ke liye apni applications bhi lao, taake applied jobs par green badge lage
+    if (user?.role === 'seeker') {
+      api('/applications/mine')
+        .then((apps) => setAppliedIds(new Set(apps.map((a) => String(a.job?._id || a.job)))))
+        .catch(() => setAppliedIds(new Set()));
+    } else {
+      setAppliedIds(new Set());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -40,7 +51,7 @@ export default function Jobs() {
       {jobs.length === 0 && <p>No jobs found.</p>}
       {jobs.map((job) => (
         <div key={job._id} className="card">
-          <h3>{job.title}</h3>
+          <h3>{job.title} {appliedIds.has(String(job._id)) && <span className="applied-badge">✓ Applied</span>}</h3>
           <p>{job.company} — {job.location} — {job.type}</p>
           <p>{job.salary || ''}</p>
           <Link to={`/jobs/${job._id}`}>View Details</Link>

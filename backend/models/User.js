@@ -11,6 +11,9 @@ const userSchema = new mongoose.Schema(
     role: { type: String, enum: ['seeker', 'employer'], required: true },
     company: { type: String, trim: true }, // sirf employer ke liye
     skills: { type: String, trim: true }, // sirf seeker ke liye, comma se alag
+    // Forgot password: token ka hash aur expiry save hote hain, asal token kabhi DB me nahi
+    resetPasswordToken: { type: String },
+    resetPasswordExpire: { type: Date },
   },
   { timestamps: true }
 );

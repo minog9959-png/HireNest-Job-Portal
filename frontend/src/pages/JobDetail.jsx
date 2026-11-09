@@ -17,10 +17,23 @@ export default function JobDetail() {
   const [coverLetter, setCoverLetter] = useState('');
   const [resumeFile, setResumeFile] = useState(null);
   const [alert, setAlert] = useState(null);
+  // Is job par pehle apply kar chuke hain ya nahi — agar haan to Apply disabled hoga
+  const [applied, setApplied] = useState(false);
 
   useEffect(() => {
     api(`/jobs/${id}`).then(setJob);
   }, [id]);
+
+  // Seeker ki apni applications se check karo: is job par apply hua hai ya nahi
+  useEffect(() => {
+    if (user?.role === 'seeker') {
+      api('/applications/mine')
+        .then((apps) => setApplied(apps.some((a) => String(a.job?._id || a.job) === String(id))))
+        .catch(() => setApplied(false));
+    } else {
+      setApplied(false);
+    }
+  }, [id, user]);
 
   useEffect(() => {
     if (user) {
@@ -43,6 +56,7 @@ export default function JobDetail() {
       formData.append('coverLetter', coverLetter);
       if (resumeFile) formData.append('resume', resumeFile);
       await apiUpload('/applications', formData);
+      setApplied(true);
       setAlert({ type: 'success', text: 'Application submitted successfully! You can check your status in My Applications.' });
     } catch (err) {
       setAlert({ type: 'error', text: err.message });
@@ -52,7 +66,7 @@ export default function JobDetail() {
   if (!job) return <p>Loading...</p>;
   return (
     <div>
-      <h1>{job.title}</h1>
+      <h1>{job.title} {applied && <span className="applied-badge">✓ Applied</span>}</h1>
       <p>{job.company} — {job.location} — {job.type}</p>
       <p>{job.salary || ''}</p>
       <p>{job.description}</p>
@@ -62,15 +76,16 @@ export default function JobDetail() {
       {user?.role === 'seeker' && (
         <form onSubmit={apply}>
           <h3>Apply Now</h3>
-          <input required placeholder="Full name" value={applicantName} onChange={(e) => setApplicantName(e.target.value)} />
-          <input required type="email" placeholder="Email" value={applicantEmail} onChange={(e) => setApplicantEmail(e.target.value)} />
-          <input required placeholder="Experience (e.g. 2 years, Fresher)" value={experience} onChange={(e) => setExperience(e.target.value)} />
-          <input required type="tel" placeholder="Phone number" value={phone} onChange={(e) => setPhone(e.target.value)} />
-          <textarea placeholder="Cover letter (optional)" value={coverLetter} onChange={(e) => setCoverLetter(e.target.value)} />
+          {applied && <Alert type="success">You have already applied for this job.</Alert>}
+          <input required disabled={applied} placeholder="Full name" value={applicantName} onChange={(e) => setApplicantName(e.target.value)} />
+          <input required disabled={applied} type="email" placeholder="Email" value={applicantEmail} onChange={(e) => setApplicantEmail(e.target.value)} />
+          <input required disabled={applied} placeholder="Experience (e.g. 2 years, Fresher)" value={experience} onChange={(e) => setExperience(e.target.value)} />
+          <input required disabled={applied} type="tel" placeholder="Phone number" value={phone} onChange={(e) => setPhone(e.target.value)} />
+          <textarea disabled={applied} placeholder="Cover letter (optional)" value={coverLetter} onChange={(e) => setCoverLetter(e.target.value)} />
           <label>Upload your CV (PDF only, max 5MB)</label>
-          <input type="file" accept=".pdf,application/pdf" onChange={(e) => setResumeFile(e.target.files[0] || null)} />
+          <input disabled={applied} type="file" accept=".pdf,application/pdf" onChange={(e) => setResumeFile(e.target.files[0] || null)} />
           {resumeFile && <p className="hint">Selected: {resumeFile.name}</p>}
-          <button>Apply</button>
+          <button disabled={applied}>{applied ? 'Applied ✓' : 'Apply'}</button>
           {alert && <Alert type={alert.type}>{alert.text}</Alert>}
         </form>
       )}

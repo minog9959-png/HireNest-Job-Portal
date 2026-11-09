@@ -22,7 +22,7 @@ export default function MyApplications() {
       )}
       {apps.map((a) => (
         <div key={a._id} className="card">
-          <h3>{a.job?.title}</h3>
+          <h3>{a.job?.title} <span className="applied-badge">✓ Applied</span></h3>
           <p>{a.job?.company} — {a.job?.location}</p>
           <p>{a.applicantName} — {a.applicantEmail}</p>
           <p>Phone: {a.phone || '-'}</p>

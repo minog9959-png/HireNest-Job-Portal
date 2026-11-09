@@ -38,9 +38,12 @@ Short jawab: "Auth, role-based access, jobs CRUD, search/filter, aur application
 3. JWT: login par token, har request me header, protect middleware
 4. Role + ownership: authorize ke sath job ka malik bhi check hota hai
 5. Search/filter backend par, unique index dobara apply rokta hai
+6. Forgot password: random token banta hai, us ka hash + 15 minute expiry DB me, link se naya password set hota hai
+7. Applied jobs par green "Applied" badge, Job Detail kholo to Apply button disabled hota hai
 
 ## Demo dikhane ka order (agar laptop par dikhana ho)
 1. Seeker login → Jobs → Search "React" → Job detail → Apply
-2. My Applications me status "pending" dikhayein
+2. My Applications me status "pending" dikhayein, job ke samne green "Applied" badge dikhega; dobara Job Detail kholo to Apply button disabled milega
 3. Logout → Employer login → My Jobs → Applicants → Shortlist karein
 4. Wapis seeker login → status ab "shortlisted" dikhega
+5. Login page par "Forgot password?" → email dalo → reset link se naya password set karo → naye password se login karo

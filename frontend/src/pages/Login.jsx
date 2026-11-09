@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Alert from '../components/Alert';
 
@@ -27,6 +27,7 @@ export default function Login() {
       <input type="email" required placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
       <input type="password" required placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
       <button>Login</button>
+      <p className="form-link"><Link to="/forgot-password">Forgot password?</Link></p>
       {error && <Alert type="error">{error}</Alert>}
     </form>
     </div>
