@@ -11,13 +11,32 @@ export default function Jobs() {
   const [search, setSearch] = useState('');
   const [location, setLocation] = useState('');
   const [type, setType] = useState('');
+  // Cold start: Vercel backend sota hai, pehli request fail ho sakti hai.
+  // Is liye pehle "Loading..." dikhate hain, "No jobs found" nahi,
+  // aur fail ho to khud 2 dafa dobara try karte hain.
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  async function load() {
+  async function load(attempt = 0) {
     const q = new URLSearchParams();
     if (search) q.set('search', search);
     if (location) q.set('location', location);
     if (type) q.set('type', type);
-    setJobs(await api(`/jobs?${q.toString()}`));
+    setLoading(true);
+    setError('');
+    try {
+      setJobs(await api(`/jobs?${q.toString()}`));
+      setLoading(false);
+    } catch (err) {
+      // Network fail ya 503 (database waking up) ho to 4 second ruk kar dobara try karo
+      if (attempt < 2) {
+        await new Promise((r) => setTimeout(r, 4000));
+        return load(attempt + 1);
+      }
+      setJobs([]);
+      setLoading(false);
+      setError('Server is waking up, please refresh the page in a few seconds.');
+    }
   }
 
   useEffect(() => {
@@ -46,9 +65,11 @@ export default function Jobs() {
           <option>Remote</option>
           <option>Internship</option>
         </select>
-        <button onClick={load}>Search</button>
+        <button onClick={() => load()}>Search</button>
       </div>
-      {jobs.length === 0 && <p>No jobs found.</p>}
+      {loading && <p>Loading jobs, please wait...</p>}
+      {!loading && error && <p>{error}</p>}
+      {!loading && !error && jobs.length === 0 && <p>No jobs found.</p>}
       {jobs.map((job) => (
         <div key={job._id} className="card">
           <h3>{job.title} {appliedIds.has(String(job._id)) && <span className="applied-badge">✓ Applied</span>}</h3>

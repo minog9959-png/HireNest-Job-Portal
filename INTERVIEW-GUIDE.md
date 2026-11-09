@@ -32,7 +32,7 @@ Short jawab: "Auth, role-based access, jobs CRUD, search/filter, aur application
 ## Agar pooche: "Is me sab se mushkil kya tha?"
 "Ownership check. Pehle sirf role check tha, to koi bhi employer kisi ki bhi job edit kar sakta tha. Phir maine har edit/delete/status change me ye check lagaya ke wo job ya application usi employer ki ho. Yehi asli security hai."
 
-## Quick revision — 5 points yaad rakhein
+## Quick revision — 9 points yaad rakhein
 1. 2 roles: seeker, employer
 2. 3 models: User, Job, Application — rishta ID + populate se
 3. JWT: login par token, har request me header, protect middleware
@@ -41,7 +41,7 @@ Short jawab: "Auth, role-based access, jobs CRUD, search/filter, aur application
 6. Forgot password: random token banta hai, us ka hash + 15 minute expiry DB me, link se naya password set hota hai
 7. Applied jobs par green "Applied" badge, Job Detail kholo to Apply button disabled hota hai
 8. DNS: server.js me Google DNS set hai taake Atlas ka SRV address mile; CORS: sirf localhost:5173 aur live frontend allowed hain
-8. Cold start: Vercel serverless backend der baad sota hai, pehli request fail ho sakti hai — is liye GitHub Action har 5 minute me /api/health ping karke backend garam rakhta hai, aur Jobs/Login fail ho to khud dobara try karte hain, pehle "Loading..." dikhta hai
+9. Cold start: Vercel serverless backend der baad sota hai, pehli request fail ho sakti hai — is liye GitHub Action har 5 minute me /api/health ping karke backend garam rakhta hai, aur Jobs/Login fail ho to khud dobara try karte hain, pehle "Loading..." dikhta hai
 
 ## Demo dikhane ka order (agar laptop par dikhana ho)
 1. Seeker login → Jobs → Search "React" → Job detail → Apply
