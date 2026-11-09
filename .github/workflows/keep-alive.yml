@@ -1,0 +1,19 @@
+# Keep-alive: Vercel serverless backend sota hai jab der tak koi request na aaye.
+# Har 5 minute me /api/health ping karte hain, taake backend garam rahe
+# aur interviewer jab site khole to pehli request par "Failed to fetch" na aaye.
+name: Keep backend warm
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping HireNest health
+        run: |
+          curl -fsS --max-time 30 https://backend-one-delta-95.vercel.app/api/health
+          echo ""
+          echo "Backend is warm"
