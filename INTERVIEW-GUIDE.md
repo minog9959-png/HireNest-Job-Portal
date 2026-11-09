@@ -40,6 +40,8 @@ Short jawab: "Auth, role-based access, jobs CRUD, search/filter, aur application
 5. Search/filter backend par, unique index dobara apply rokta hai
 6. Forgot password: random token banta hai, us ka hash + 15 minute expiry DB me, link se naya password set hota hai
 7. Applied jobs par green "Applied" badge, Job Detail kholo to Apply button disabled hota hai
+8. DNS: server.js me Google DNS set hai taake Atlas ka SRV address mile; CORS: sirf localhost:5173 aur live frontend allowed hain
+8. Cold start: Vercel serverless backend der baad sota hai, pehli request fail ho sakti hai — is liye GitHub Action har 5 minute me /api/health ping karke backend garam rakhta hai, aur Jobs/Login fail ho to khud dobara try karte hain, pehle "Loading..." dikhta hai
 
 ## Demo dikhane ka order (agar laptop par dikhana ho)
 1. Seeker login → Jobs → Search "React" → Job detail → Apply
